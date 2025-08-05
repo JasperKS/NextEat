@@ -5,6 +5,8 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const restaurant = restaurants[currentIndex];
   const [isChosen, setIsChosen] = useState(false);
+  const [likedRestaurants, setLikedRestaurants] = useState([]);
+  const [isViewingLikes, setIsViewingLikes] = useState(false);
 
   function handleSwipeLeft() {
     setCurrentIndex((prevIndex) => {
@@ -15,6 +17,7 @@ function App() {
 
   function handleSwipeRight() {
     if (restaurant) {
+      setLikedRestaurants((prevLike) => [...prevLiked, restaurant]);
       setIsChosen(true);
     }
   }
@@ -22,6 +25,25 @@ function App() {
   return (
     <div style={{ textAlign: "center", padding: "2rem" }}>
       <h1>NextEat</h1>
+      {isViewingLikes && (
+        <div style={{ maxWidth: "500px", margin: "2rem auto", textAlign: "left"}}>
+          <h2>❤️ Your Liked Restaurants</h2>
+          <p>Coming soon: a list of restaurants you swiped right on. </p>
+          <button onClick={() => setIsViewingLikes(false)} style={{ marginTop: "1rem"}}>
+            🔙 Back to Browsing
+          </button>
+        </div>
+        
+      )}
+
+      {!isChosen && !isViewingLikes && (
+        <button
+          onClick={() => setIsViewingLikes(true)}
+          style={{ marginBottom: "1rem" }}
+          >
+          ❤️ View Likes
+        </button>
+      )}
 
       {isChosen ? (
         <div style={{
